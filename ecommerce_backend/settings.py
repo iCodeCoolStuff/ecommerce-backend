@@ -38,17 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'shop.apps.ShopConfig',
-
     'rest_framework',
-]
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-#ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-#ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_UNIQUE_EMAIL = True
+    'shop.apps.ShopConfig',
+]
 
 AUTH_USER_MODEL = 'shop.User'
 

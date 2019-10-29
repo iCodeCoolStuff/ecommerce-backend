@@ -58,7 +58,7 @@ class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):
         user.first_name = validated_data['first_name']
         user.last_name  = validated_data['last_name']
         user.email      = validated_data['email']
-        if password == password_confirmation:
+        if validated_data['password'] == validated_data['password_confirmation']:
             user.set_password(validated_data['password'])
             user.save()
             return user

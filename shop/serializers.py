@@ -37,13 +37,18 @@ class UserRUDSerializer(serializers.HyperlinkedModelSerializer):
             raise serializers.ValidationError('Passwords do not match.')      
 
 
-class UserRegistrationSerializer(serializers.ModelSerializer):  
+class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):  
     password_confirmation = serializers.CharField(allow_blank=False, write_only=True)
+    url = serializers.HyperlinkedIdentityField(view_name='user-detail')
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'password', 'password_confirmation')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('pk', 'url', 'first_name', 'last_name', 'email', 'password', 'password_confirmation')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'url'     : {'read_only' : True},
+            'pk'      : {'read_only' : True}
+        }
     
     def create(self, validated_data):
         """

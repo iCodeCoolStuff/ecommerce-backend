@@ -7,7 +7,7 @@ from .models import User, Product
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'url', 'name', 'price', 'description')
+        fields = ('pk', 'url', 'name', 'price', 'description')
 
 
 class UserRUDSerializer(serializers.HyperlinkedModelSerializer):

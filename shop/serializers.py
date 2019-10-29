@@ -63,4 +63,4 @@ class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):
             user.save()
             return user
         else:
-            raise ValidationError('Password and confirmation do not match.')
+            raise serializers.ValidationError('Password and confirmation do not match.')

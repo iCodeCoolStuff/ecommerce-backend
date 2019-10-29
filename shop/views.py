@@ -6,11 +6,6 @@ from .serializers import ProductSerializer, UserRUDSerializer, UserRegistrationS
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    
-    
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserRUDSerializer
 
 
 class UserListCreateView(generics.ListCreateAPIView):

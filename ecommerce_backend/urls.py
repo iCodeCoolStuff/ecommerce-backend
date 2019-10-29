@@ -21,7 +21,6 @@ from shop import views
 
 api_router = routers.DefaultRouter()
 api_router.register(r'products', views.ProductViewSet)
-#api_router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
     path('api/v1/', include(api_router.urls)),

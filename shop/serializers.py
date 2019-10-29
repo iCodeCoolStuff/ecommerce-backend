@@ -9,30 +9,16 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         model = Product
         fields = ('id', 'url', 'name', 'price', 'description')
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'url', 'first_name', 'last_name', 'username', 'email', 'is_active')
 
-class UserCreateSerializer(serializers.ModelSerializer):
-    #password_confirmation = serializers.CharField(allow_blank=False, write_only=True)
+class UserRUDSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='user-detail')
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def create(self, validated_data):
-        """
-        Creates a new user with a first name, last name, email, and password
-        """
-        user = User()
-        user.first_name = validated_data['first_name']
-        user.last_name  = validated_data['last_name']
-        user.email      = validated_data['email']
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
+        fields = ('pk', 'url', 'first_name', 'last_name', 'email', 'password')
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
 
     def update(self, instance, validated_data):
         """
@@ -48,4 +34,28 @@ class UserCreateSerializer(serializers.ModelSerializer):
             instance.save()
             return instance
         else:
-            raise serializers.ValidationError('Passwords do not match.')        
+            raise serializers.ValidationError('Passwords do not match.')      
+
+
+class UserRegistrationSerializer(serializers.ModelSerializer):  
+    password_confirmation = serializers.CharField(allow_blank=False, write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'password', 'password_confirmation')
+        extra_kwargs = {'password': {'write_only': True}}
+    
+    def create(self, validated_data):
+        """
+        Creates a new user with a first name, last name, email, and password
+        """
+        user = User()
+        user.first_name = validated_data['first_name']
+        user.last_name  = validated_data['last_name']
+        user.email      = validated_data['email']
+        if password == password_confirmation:
+            user.set_password(validated_data['password'])
+            user.save()
+            return user
+        else:
+            raise ValidationError('Password and confirmation do not match.')

@@ -21,10 +21,14 @@ from shop import views
 
 api_router = routers.DefaultRouter()
 api_router.register(r'products', views.ProductViewSet)
-api_router.register(r'users', views.UserViewSet)
+#api_router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
     path('api/v1/', include(api_router.urls)),
+
+    path('api/v1/users/<int:pk>/', views.UserRUDView.as_view(), name="user-detail"),
+    path('api/v1/users/', views.UserListCreateView.as_view()),
+
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

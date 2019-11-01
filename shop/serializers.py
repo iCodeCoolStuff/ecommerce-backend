@@ -1,6 +1,8 @@
 from django.contrib.auth.hashers import check_password
 
 from rest_framework import serializers
+
+from . import exceptions
 from .models import User, Product
 
 
@@ -34,7 +36,7 @@ class UserRUDSerializer(serializers.HyperlinkedModelSerializer):
             instance.save()
             return instance
         else:
-            raise serializers.ValidationError('Passwords do not match.')      
+            raise exceptions.PasswordMismatchException()      
 
 
 class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):  
@@ -63,4 +65,4 @@ class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):
             user.save()
             return user
         else:
-            raise serializers.ValidationError('Password and confirmation do not match.')
+            raise exceptions.PasswordConfirmationMismatchException()

@@ -93,6 +93,13 @@ DATABASES = {
     }
 }
 
+# Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT AUTHENTICATION CLASSES' : {
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

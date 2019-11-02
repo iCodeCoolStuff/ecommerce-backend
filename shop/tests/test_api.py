@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.test import SimpleTestCase
 
 from rest_framework.test import APIRequestFactory
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from ..models import User, Product
 from ..views  import UserListCreateView, UserRUDView
@@ -101,7 +102,18 @@ class UserEndpointAPITest(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.data["detail"], "Passwords do not match.")
 
-    
-    
+class TokenAPITest(TestCase):
 
-    
+    def setUp(self):
+        self.user = User(first_name="John", last_name="Doe", email="johndoe@gmail.com")
+        self.user.set_password('password')
+        self.user.save()
+
+    def test_get_token_from_api(self):
+        request = FACTORY.post('/api/v1/token/', {
+            'email': 'johndoe@gmail.com',
+            'password': 'password'
+        }, format="json")
+        view = TokenObtainPairView.as_view()
+        response = view(request)
+        self.assertEqual(response.status_code, 200)

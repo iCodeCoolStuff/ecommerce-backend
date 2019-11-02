@@ -95,9 +95,9 @@ DATABASES = {
 
 # Rest Framework
 REST_FRAMEWORK = {
-    'DEFAULT AUTHENTICATION CLASSES' : {
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
         'rest_framework_simplejwt.authentication.JWTAuthentication'
-    }
+    ]
 }
 
 

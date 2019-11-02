@@ -31,8 +31,6 @@ urlpatterns = [
     path('api/v1/users/<int:pk>/', views.UserRUDView.as_view(), name="user-detail"),
     path('api/v1/users/', views.UserListCreateView.as_view()),
 
-    
-
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

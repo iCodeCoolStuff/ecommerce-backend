@@ -23,11 +23,11 @@ class Wishlist(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-
 class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
+
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField(Product)

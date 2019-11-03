@@ -12,8 +12,8 @@ FACTORY = APIRequestFactory()
 class APIStatusCodeTests(TestCase):
 
     def setUp(self):
-        self.user = User(first_name="John", last_name="doe", email="johndoe@example.com")
-        self.user.save()
+        self.user = User.objects.create_user(first_name="John", last_name="Doe", 
+                                                email="johndoe@gmail.com", password="password")
 
         self.product = Product(name="Apple", price="1.00", description="A red apple.")
         self.product.save()
@@ -37,9 +37,8 @@ class APIStatusCodeTests(TestCase):
 class UserEndpointAPITest(TestCase):
 
     def setUp(self):
-        self.user = User(first_name="Example", last_name="User", email="exampleuser@gmail.com", password="password")
-        self.user.set_password('password')
-        self.user.save()
+        self.user = User.objects.create_user(first_name="John", last_name="Doe", 
+                                                email="johndoe@gmail.com", password="password")
 
     def test_create_user(self):
         request = FACTORY.post('/api/v1/users/', {
@@ -103,9 +102,8 @@ class UserEndpointAPITest(TestCase):
 class TokenAPITest(TestCase):
 
     def setUp(self):
-        self.user = User(first_name="John", last_name="Doe", email="johndoe@gmail.com")
-        self.user.set_password('password')
-        self.user.save()
+        self.user = User.objects.create_user(first_name="John", last_name="Doe", 
+                                                email="johndoe@gmail.com", password="password")
 
     def test_get_token_from_api(self):
         request = FACTORY.post('/api/v1/token/', {

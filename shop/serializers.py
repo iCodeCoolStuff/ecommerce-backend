@@ -56,13 +56,15 @@ class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):
         """
         Creates a new user with a first name, last name, email, and password
         """
-        user = User()
-        user.first_name = validated_data['first_name']
-        user.last_name  = validated_data['last_name']
-        user.email      = validated_data['email']
-        if validated_data['password'] == validated_data['password_confirmation']:
-            user.set_password(validated_data['password'])
-            user.save()
+        first_name = validated_data['first_name']
+        last_name  = validated_data['last_name']
+        email      = validated_data['email']
+        password   = validated_data['password']
+        if password == validated_data['password_confirmation']:
+            user = User.objects.create_user(first_name=first_name,
+                                            last_name=last_name,
+                                            email=email,
+                                            password=password)
             return user
         else:
             raise exceptions.PasswordConfirmationMismatchException()

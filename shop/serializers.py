@@ -60,6 +60,7 @@ class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):
         last_name  = validated_data['last_name']
         email      = validated_data['email']
         password   = validated_data['password']
+        
         if password == validated_data['password_confirmation']:
             user = User.objects.create_user(first_name=first_name,
                                             last_name=last_name,

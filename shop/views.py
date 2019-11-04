@@ -1,8 +1,14 @@
 from rest_framework import generics, viewsets
 
-from .models      import User, Product
+from .models      import User, Product, Cart
 from .permissions import IsAdminOrWriteOnly, UserPermission
-from .serializers import ProductSerializer, UserRUDSerializer, UserListCreateSerializer
+from .serializers import (
+    ProductSerializer, 
+    UserRUDSerializer, 
+    UserListCreateSerializer, 
+    CartSerializer
+)
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
@@ -21,4 +27,9 @@ class UserRUDView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserRUDSerializer
     #permission_classes = [UserPermission]
-    
+
+class CartView(generics.RetrieveUpdateAPIView):
+    serializer_class = CartSerializer
+
+    def get_queryset(self):
+        return Cart.objects.filter(user_id=self.kwargs['pk'])

@@ -28,8 +28,9 @@ urlpatterns = [
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    path('api/v1/users/<int:pk>/', views.UserRUDView.as_view(), name="user-detail"),
     path('api/v1/users/', views.UserListCreateView.as_view()),
+    path('api/v1/users/<int:pk>/', views.UserRUDView.as_view(), name="user-detail"),
+    path('api/v1/users/<int:pk>/cart/', views.CartView.as_view(), name="cart-detail"),
 
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))

@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 
 from . import exceptions
-from .models import User, Product
+from .models import User, Product, Cart
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
@@ -69,3 +69,10 @@ class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):
             return user
         else:
             raise exceptions.PasswordConfirmationMismatchException()
+
+class CartSerializer(serializers.ModelSerializer):
+    items = ProductSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Cart
+        fields = ['items']

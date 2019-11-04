@@ -26,6 +26,10 @@ class APIStatusCodeTests(TestCase):
         response = self.client.get(f'/api/v1/users/{self.user.pk}/')
         self.assertEquals(response.status_code, 200)
 
+    def test_user_detail_cart_status_code(self):
+        response = self.client.get(f'/api/v1/users/{self.user.pk}/cart/')
+        self.assertEquals(response.status_code, 200)
+
     def test_products_status_code(self):
         response = self.client.get('/api/v1/products/')
         self.assertEquals(response.status_code, 200)

@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 
 from . import exceptions
-from .models import User, Product, Cart
+from .models import User, Product, Cart, CartItem
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
@@ -70,8 +70,36 @@ class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):
         else:
             raise exceptions.PasswordConfirmationMismatchException()
 
+
+class CartItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+    product_id = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = CartItem
+        fields = ['pk', 'product', 'product_id', 'quantity']
+        extra_kwargs = {
+            'item_id': {'write_only': True}
+        }
+
+    def create(self, validated_data):
+        quantity   = validated_data['quantity']
+        product_id = validated_data['product_id']
+        product    = Product.objects.get(pk=product_id)
+        cart       = User.objects.get(pk=self.context['user_id']).cart
+
+        cart_item = CartItem.objects.create(
+            quantity=quantity,
+            product=product,
+            cart=cart
+        )
+
+        cart_item.save()
+        return cart_item
+
+
 class CartSerializer(serializers.ModelSerializer):
-    items = ProductSerializer(many=True, read_only=True)
+    items = CartItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cart

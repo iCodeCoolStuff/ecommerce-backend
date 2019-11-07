@@ -30,7 +30,7 @@ class UserRUDView(generics.RetrieveUpdateDestroyAPIView):
     #permission_classes = [UserPermission]
 
 
-class CartView(generics.RetrieveUpdateAPIView):
+class CartView(generics.RetrieveAPIView):
     serializer_class = CartSerializer
 
     def get_queryset(self):
@@ -42,7 +42,7 @@ class CartItemViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         cart = User.objects.get(pk=self.kwargs['user_pk']).cart
-        return CartItem.objects.filter(cart_id=cart.pk)
+        return CartItem.objects.filter(cart=cart)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

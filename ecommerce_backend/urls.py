@@ -43,7 +43,7 @@ urlpatterns = [
 
     path('api/v1/users/', views.UserListCreateView.as_view()),
     path('api/v1/users/<int:pk>/', views.UserRUDView.as_view(), name="user-detail"),
-    #path('api/v1/users/<int:pk>/cart/', views.CartView.as_view(), name="cart-detail"),
+    path('api/v1/users/<int:pk>/cart/', views.CartView.as_view(), name="cart-detail"),
     path('api/v1/users/<int:user_pk>/cart/items/', item_list, name="item-list"),
     path('api/v1/users/<int:user_pk>/cart/items/<int:pk>/', item_detail, name="item-detail"),
 

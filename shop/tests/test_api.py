@@ -5,7 +5,7 @@ from rest_framework.test import APIRequestFactory
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from ..models import User, Product
-from ..views  import UserListCreateView, UserRUDView
+from ..views  import UserListCreateView, UserRUDView, CartItemViewSet
 
 FACTORY = APIRequestFactory()
 
@@ -28,6 +28,10 @@ class APIStatusCodeTests(TestCase):
 
     def test_user_detail_cart_status_code(self):
         response = self.client.get(f'/api/v1/users/{self.user.pk}/cart/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_user_detail_cart_items_status_code(self):
+        response = self.client.get(f'/api/v1/users/{self.user.pk}/cart/items/')
         self.assertEquals(response.status_code, 200)
 
     def test_products_status_code(self):
@@ -102,6 +106,24 @@ class UserEndpointAPITest(TestCase):
         response.render()
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.data["detail"], "Passwords do not match.")
+
+
+class CartEndpointAPITest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(first_name="John", last_name="Doe", 
+                                                        email="johndoe@gmail.com", password="password")
+
+        self.product = Product(name="Apple", price="1.00", description="A red apple.")
+        self.product.save()
+
+    def test_create_cartitem_in_user_shopping_cart(self):
+        response = self.client.post(f'/api/v1/users/{self.user.pk}/cart/items/', {
+            'product_id': self.product.pk,
+            'quantity'  : 3}, format='json')
+        response.render()
+        self.assertEqual(response.status_code, 201)
+
 
 class TokenAPITest(TestCase):
 

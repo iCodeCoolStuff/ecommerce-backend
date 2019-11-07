@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import Sum, F, FloatField
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import CustomUserManager
@@ -29,11 +30,19 @@ class Product(models.Model):
     description = models.TextField()
 
 
+class CartItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     items = models.ManyToManyField('CartItem')
 
-
-class CartItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    def get_total(self):
+        total_dict = self.items.aggregate(total=Sum(F('quantity') * F('product__price'),
+                                            output_field=FloatField()))
+        if total_dict.get('total') == None:
+            return 0.0
+        else:
+            return total_dict['total']

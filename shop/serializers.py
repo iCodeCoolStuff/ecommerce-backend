@@ -6,18 +6,16 @@ from . import exceptions
 from .models import User, Product, Cart, CartItem
 
 
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('pk', 'url', 'name', 'price', 'description')
+        fields = ('pk', 'name', 'price', 'description')
 
 
-class UserRUDSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='user-detail')
-
+class UserRUDSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('pk', 'url', 'first_name', 'last_name', 'email', 'password')
+        fields = ('pk', 'first_name', 'last_name', 'email', 'password')
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -39,13 +37,12 @@ class UserRUDSerializer(serializers.HyperlinkedModelSerializer):
             raise exceptions.PasswordMismatchException()      
 
 
-class UserListCreateSerializer(serializers.HyperlinkedModelSerializer):  
+class UserListCreateSerializer(serializers.ModelSerializer):  
     password_confirmation = serializers.CharField(allow_blank=False, write_only=True)
-    url = serializers.HyperlinkedIdentityField(view_name='user-detail')
 
     class Meta:
         model = User
-        fields = ('pk', 'url', 'first_name', 'last_name', 'email', 'password', 'password_confirmation')
+        fields = ('pk', 'first_name', 'last_name', 'email', 'password', 'password_confirmation')
         extra_kwargs = {
             'password': {'write_only': True},
             'url'     : {'read_only' : True},

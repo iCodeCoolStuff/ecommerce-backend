@@ -86,14 +86,10 @@ class CartItemSerializer(serializers.ModelSerializer):
         quantity   = validated_data['quantity']
         product_id = validated_data['product_id']
         product    = Product.objects.get(pk=product_id)
-        cart       = User.objects.get(pk=self.context['user_id']).cart
+        cart       = Cart.objects.get(user_id=self.context['user_id'])
 
-        cart_item = CartItem.objects.create(
-            quantity=quantity,
-            product=product,
-            cart=cart
-        )
-
+        cart_item = CartItem.objects.create(quantity=quantity, product=product)
+        cart_item.cart_set.add(cart)
         cart_item.save()
         return cart_item
 
@@ -103,4 +99,4 @@ class CartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = ['items']
+        fields = ['user', 'items']

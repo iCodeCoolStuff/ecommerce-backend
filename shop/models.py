@@ -46,3 +46,10 @@ class Cart(models.Model):
             return 0.0
         else:
             return total_dict['total']
+
+
+class Order(models.Model):
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    items      = models.ManyToManyField('CartItem')
+    order_date = models.DateTimeField(auto_now_add=True)
+    total      = models.DecimalField(max_digits=6, decimal_places=2)

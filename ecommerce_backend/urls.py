@@ -34,6 +34,17 @@ item_detail = views.CartItemViewSet.as_view({
     'patch': 'partial_update',
     'delete': 'destroy'
 })
+
+order_list = views.OrderViewSet.as_view({
+    'get': 'list'
+})
+
+order_detail = views.OrderViewSet.as_view({
+    'get': 'retrieve',
+    #'put': 'update',
+    #'patch': 'partial_update',
+    'delete': 'destroy'
+})
  
 
 urlpatterns = [
@@ -43,9 +54,14 @@ urlpatterns = [
 
     path('api/v1/users/', views.UserListCreateView.as_view()),
     path('api/v1/users/<int:pk>/', views.UserRUDView.as_view(), name="user-detail"),
+
     path('api/v1/users/<int:pk>/cart/', views.CartView.as_view(), name="cart-detail"),
+    path('api/v1/users/<int:user_pk>/cart/checkout', views.OrderCreateView.as_view(), name="order-create"),
     path('api/v1/users/<int:user_pk>/cart/items/', item_list, name="item-list"),
     path('api/v1/users/<int:user_pk>/cart/items/<int:pk>/', item_detail, name="item-detail"),
+
+    path('api/v1/users/<int:user_pk>/orders/', order_list, name="order-list"),
+    path('api/v1/users/<int:user_pk>/orders/<int:pk>/', order_detail, name="order-detail"),
 
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))

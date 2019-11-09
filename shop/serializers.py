@@ -3,7 +3,13 @@ from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 
 from . import exceptions
-from .models import User, Product, Cart, CartItem
+from .models import (
+    User,
+    Product,
+    Cart,
+    CartItem,
+    Order
+)
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -101,3 +107,28 @@ class CartSerializer(serializers.ModelSerializer):
 
     def get_total(self, obj):
         return obj.get_total()
+
+
+class OrderCreateSerializer(serializers.Serializer):
+
+    def create(self, validated_data):
+        user  = User.objects.get(pk=self.context['user_id'])
+        cart  = Cart.objects.get(user=user)
+
+        if not cart.items.exists():
+            raise exceptions.EmptyCartException()
+
+        order = Order(user=user, total=cart.get_total())
+        order.save()
+        order.items.set(cart.items.all())
+
+        cart.items.clear()
+        return order
+
+
+class OrderModelSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ['pk', 'user', 'total', 'order_date', 'items']

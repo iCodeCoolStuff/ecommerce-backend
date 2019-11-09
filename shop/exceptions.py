@@ -7,3 +7,7 @@ class PasswordMismatchException(APIException):
 class PasswordConfirmationMismatchException(APIException):
     status_code = 400
     default_detail = "Password and confirmation do not match."
+
+class EmptyCartException(APIException):
+    status_code = 400
+    default_detail = "Cart cannot be empty."

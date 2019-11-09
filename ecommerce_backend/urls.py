@@ -35,6 +35,10 @@ item_detail = views.CartItemViewSet.as_view({
     'delete': 'destroy'
 })
 
+order_create = views.OrderViewSet.as_view({
+    'post': 'create'
+})
+
 order_list = views.OrderViewSet.as_view({
     'get': 'list'
 })
@@ -56,7 +60,7 @@ urlpatterns = [
     path('api/v1/users/<int:pk>/', views.UserRUDView.as_view(), name="user-detail"),
 
     path('api/v1/users/<int:pk>/cart/', views.CartView.as_view(), name="cart-detail"),
-    path('api/v1/users/<int:user_pk>/cart/checkout', views.OrderCreateView.as_view(), name="order-create"),
+    path('api/v1/users/<int:user_pk>/cart/checkout', order_create, name="order-create"),
     path('api/v1/users/<int:user_pk>/cart/items/', item_list, name="item-list"),
     path('api/v1/users/<int:user_pk>/cart/items/<int:pk>/', item_detail, name="item-detail"),
 

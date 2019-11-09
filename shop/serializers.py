@@ -109,7 +109,13 @@ class CartSerializer(serializers.ModelSerializer):
         return obj.get_total()
 
 
-class OrderCreateSerializer(serializers.Serializer):
+class OrderSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ['pk', 'user', 'total', 'order_date', 'items']
+        read_only_fields = fields
 
     def create(self, validated_data):
         user  = User.objects.get(pk=self.context['user_id'])
@@ -124,11 +130,3 @@ class OrderCreateSerializer(serializers.Serializer):
 
         cart.items.clear()
         return order
-
-
-class OrderModelSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Order
-        fields = ['pk', 'user', 'total', 'order_date', 'items']

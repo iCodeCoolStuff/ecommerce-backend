@@ -8,8 +8,7 @@ from .serializers import (
     UserListCreateSerializer, 
     CartSerializer,
     CartItemSerializer,
-    OrderCreateSerializer,
-    OrderModelSerializer
+    OrderSerializer
 )
 
 
@@ -53,20 +52,11 @@ class CartItemViewSet(viewsets.ModelViewSet):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    serializer_class = OrderModelSerializer
+    serializer_class = OrderSerializer
 
     def get_queryset(self):
         user = User.objects.get(pk=self.kwargs['user_pk'])
         return Order.objects.filter(user=user)
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context['user_id'] = self.kwargs['user_pk']
-        return context
-
-
-class OrderCreateView(generics.CreateAPIView):
-    serializer_class = OrderCreateSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

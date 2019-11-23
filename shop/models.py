@@ -46,3 +46,10 @@ class Cart(models.Model):
             return 0.0
         else:
             return total_dict['total']
+
+
+class ImageSet(models.Model):
+    product = models.ForeignKey(Product, related_name="images", on_delete=models.CASCADE)
+    img500x600 = models.ImageField(upload_to="images/")
+    img300x400 = models.ImageField(upload_to="images/")
+    img100x100 = models.ImageField(upload_to="images/")

@@ -1,5 +1,8 @@
 from rest_framework import generics, viewsets
 
+from rest_framework.decorators import action
+from rest_framework.response   import Response
+
 from .models      import User, Product, Cart, CartItem
 from .permissions import IsAdminOrWriteOnly, UserPermission
 from .serializers import (
@@ -14,6 +17,12 @@ from .serializers import (
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, pk=None):
+        q = self.queryset.filter(featured=True)
+        serializer = ProductSerializer(q, many=True)
+        return Response(serializer.data)
 
 
 class UserListCreateView(generics.ListCreateAPIView):
@@ -48,3 +57,10 @@ class CartItemViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         context['user_id'] = self.kwargs['user_pk']
         return context
+
+
+class FeaturedAPIView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        return Product.objects.filter(featured=True)

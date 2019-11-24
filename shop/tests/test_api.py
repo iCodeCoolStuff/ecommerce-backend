@@ -19,35 +19,35 @@ class APIStatusCodeTests(TestCase):
         self.product.save()
 
     def test_users_status_code(self):
-        response = self.client.get('/api/v1/users/')
+        response = self.client.get('/v1/users/')
         self.assertEquals(response.status_code, 200)
 
     def test_user_detail_status_code(self):
-        response = self.client.get(f'/api/v1/users/{self.user.pk}/')
+        response = self.client.get(f'/v1/users/{self.user.pk}/')
         self.assertEquals(response.status_code, 200)
 
     def test_user_detail_cart_status_code(self):
-        response = self.client.get(f'/api/v1/users/{self.user.pk}/cart/')
+        response = self.client.get(f'/v1/users/{self.user.pk}/cart/')
         self.assertEquals(response.status_code, 200)
 
     def test_user_detail_cart_items_status_code(self):
-        response = self.client.get(f'/api/v1/users/{self.user.pk}/cart/items/')
+        response = self.client.get(f'/v1/users/{self.user.pk}/cart/items/')
         self.assertEquals(response.status_code, 200)
 
     def test_user_detail_orders_status_code(self):
-        response = self.client.get(f'/api/v1/users/{self.user.pk}/orders/')
+        response = self.client.get(f'/v1/users/{self.user.pk}/orders/')
         self.assertEquals(response.status_code, 200)
 
     def test_products_status_code(self):
-        response = self.client.get('/api/v1/products/')
+        response = self.client.get('/v1/products/')
         self.assertEquals(response.status_code, 200)
 
     def test_product_detail_status_code(self):
-        response = self.client.get(f'/api/v1/products/{self.product.pk}/')
+        response = self.client.get(f'/v1/products/{self.product.pk}/')
         self.assertEquals(response.status_code, 200)
 
     def test_featured_products_status_code(self):
-        response = self.client.get('/api/v1/products/featured/')
+        response = self.client.get('/v1/products/featured/')
         self.assertEquals(response.status_code, 200)
 
 class UserEndpointAPITest(TestCase):
@@ -57,7 +57,7 @@ class UserEndpointAPITest(TestCase):
                                                 email="johndoe@gmail.com", password="password")
 
     def test_create_user(self):
-        request = FACTORY.post('/api/v1/users/', {
+        request = FACTORY.post('/v1/users/', {
             'first_name': 'John',
             'last_name' : 'Doe',
             'email'     : 'johndoe@example.com',
@@ -69,7 +69,7 @@ class UserEndpointAPITest(TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_create_user_without_password_confirmation(self):
-        request = FACTORY.post('/api/v1/users/', {
+        request = FACTORY.post('/v1/users/', {
             'first_name': 'John',
             'last_name' : 'Doe',
             'email'     : 'johndoe@example.com',
@@ -80,7 +80,7 @@ class UserEndpointAPITest(TestCase):
         self.assertEqual(response.status_code, 400)
     
     def test_create_user_with_password_and_confirmation_mismatch(self):
-        request = FACTORY.post('/api/v1/users/', {
+        request = FACTORY.post('/v1/users/', {
             'first_name': 'John',
             'last_name' : 'Doe',
             'email'     : 'johndoe@example.com',
@@ -93,7 +93,7 @@ class UserEndpointAPITest(TestCase):
         self.assertEqual(response.data["detail"], "Password and confirmation do not match.")
 
     def test_update_user(self):
-        request = FACTORY.put(f'/api/v1/users/{self.user.pk}/', {
+        request = FACTORY.put(f'/v1/users/{self.user.pk}/', {
             'first_name': 'changed',
             'last_name' : 'changed',
             'email'     : 'changed@example.com',
@@ -104,7 +104,7 @@ class UserEndpointAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_user_without_correct_password(self):
-        request = FACTORY.put(f'/api/v1/users/{self.user.pk}/', {
+        request = FACTORY.put(f'/v1/users/{self.user.pk}/', {
             'first_name': 'changed',
             'last_name' : 'changed',
             'email'     : 'changed@example.com',
@@ -126,7 +126,7 @@ class CartEndpointAPITest(TestCase):
         self.product.save()
 
     def test_create_cartitem_in_user_shopping_cart(self):
-        response = self.client.post(f'/api/v1/users/{self.user.pk}/cart/items/', {
+        response = self.client.post(f'/v1/users/{self.user.pk}/cart/items/', {
             'product_id': self.product.pk,
             'quantity'  : 3}, format='json')
         response.render()
@@ -136,13 +136,13 @@ class CartEndpointAPITest(TestCase):
         cartitem = CartItem.objects.create(product=self.product, quantity=3)
         self.user.cart.items.add(cartitem)
 
-        response = self.client.post(f'/api/v1/users/{self.user.pk}/cart/checkout', format="json")
+        response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
         self.assertEqual(response.status_code, 201)
 
     def test_checkout_cart_with_no_items(self):
-        response = self.client.post(f'/api/v1/users/{self.user.pk}/cart/checkout', format="json")
+        response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
         self.assertEqual(response.status_code, 409)
@@ -156,7 +156,7 @@ class TokenAPITest(TestCase):
                                                 email="johndoe@gmail.com", password="password")
 
     def test_get_token_from_api(self):
-        request = FACTORY.post('/api/v1/token/', {
+        request = FACTORY.post('/v1/token/', {
             'email': 'johndoe@gmail.com',
             'password': 'password'
         }, format="json")

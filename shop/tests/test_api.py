@@ -145,7 +145,7 @@ class CartEndpointAPITest(TestCase):
         response = self.client.post(f'/api/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 409)
         self.assertEqual(response.data["detail"], "Cart cannot be empty.")
 
 

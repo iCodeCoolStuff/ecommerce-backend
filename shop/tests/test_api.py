@@ -4,7 +4,7 @@ from django.test import SimpleTestCase
 from rest_framework.test import APIRequestFactory
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from ..models import User, Product
+from ..models import User, Product, CartItem
 from ..views  import UserListCreateView, UserRUDView, CartItemViewSet
 
 FACTORY = APIRequestFactory()
@@ -32,6 +32,10 @@ class APIStatusCodeTests(TestCase):
 
     def test_user_detail_cart_items_status_code(self):
         response = self.client.get(f'/api/v1/users/{self.user.pk}/cart/items/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_user_detail_orders_status_code(self):
+        response = self.client.get(f'/api/v1/users/{self.user.pk}/orders/')
         self.assertEquals(response.status_code, 200)
 
     def test_products_status_code(self):
@@ -123,6 +127,22 @@ class CartEndpointAPITest(TestCase):
             'quantity'  : 3}, format='json')
         response.render()
         self.assertEqual(response.status_code, 201)
+
+    def test_checkout_cart(self):
+        cartitem = CartItem.objects.create(product=self.product, quantity=3)
+        self.user.cart.items.add(cartitem)
+
+        response = self.client.post(f'/api/v1/users/{self.user.pk}/cart/checkout', format="json")
+        response.render()
+
+        self.assertEqual(response.status_code, 201)
+
+    def test_checkout_cart_with_no_items(self):
+        response = self.client.post(f'/api/v1/users/{self.user.pk}/cart/checkout', format="json")
+        response.render()
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.data["detail"], "Cart cannot be empty.")
 
 
 class TokenAPITest(TestCase):

@@ -54,3 +54,10 @@ class ImageSet(models.Model):
     img100x100 = models.ImageField(upload_to="images/")
     img300x400 = models.ImageField(upload_to="images/")
     img500x600 = models.ImageField(upload_to="images/")
+
+
+class Order(models.Model):
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    items      = models.ManyToManyField('CartItem')
+    order_date = models.DateTimeField(auto_now_add=True)
+    total      = models.DecimalField(max_digits=6, decimal_places=2)

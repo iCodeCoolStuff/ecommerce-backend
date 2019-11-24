@@ -3,14 +3,16 @@ from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 from rest_framework.response   import Response
 
-from .models      import User, Product, Cart, CartItem
+from .models      import User, Product, Cart, CartItem, Order
+
 from .permissions import IsAdminOrWriteOnly, UserPermission
 from .serializers import (
     ProductSerializer, 
     UserRUDSerializer, 
     UserListCreateSerializer, 
     CartSerializer,
-    CartItemSerializer
+    CartItemSerializer,
+    OrderSerializer
 )
 
 
@@ -59,8 +61,14 @@ class CartItemViewSet(viewsets.ModelViewSet):
         return context
 
 
-class FeaturedAPIView(generics.ListAPIView):
-    serializer_class = ProductSerializer
+class OrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderSerializer
 
     def get_queryset(self):
-        return Product.objects.filter(featured=True)
+        user = User.objects.get(pk=self.kwargs['user_pk'])
+        return Order.objects.filter(user=user)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user_id'] = self.kwargs['user_pk']
+        return context

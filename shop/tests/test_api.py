@@ -43,7 +43,11 @@ class APIStatusCodeTests(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_product_detail_status_code(self):
-        response = self.client.get('/api/v1/products/1/')
+        response = self.client.get(f'/api/v1/products/{self.product.pk}/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_featured_products_status_code(self):
+        response = self.client.get('/api/v1/products/featured/')
         self.assertEquals(response.status_code, 200)
 
 class UserEndpointAPITest(TestCase):
@@ -159,9 +163,3 @@ class TokenAPITest(TestCase):
         view = TokenObtainPairView.as_view()
         response = view(request)
         self.assertEqual(response.status_code, 200)
-
-
-class ProductEndpointAPITest(TestCase):
-    def test_featured_status_code(self):
-        response = self.client.get('/api/v1/products/featured/')
-        self.assertEquals(response.status_code, 200)

@@ -3,13 +3,22 @@ from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 
 from . import exceptions
+from . import models
 from .models import User, Product, Cart, CartItem
 
 
+class ImageSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ImageSet
+        fields = ['img100x100', 'img300x400', 'img500x600']
+
+
 class ProductSerializer(serializers.ModelSerializer):
+    images = ImageSetSerializer(read_only=True)
+
     class Meta:
         model = Product
-        fields = ('pk', 'name', 'price', 'description')
+        fields = ('pk', 'name', 'price', 'description', 'images')
 
 
 class UserRUDSerializer(serializers.ModelSerializer):

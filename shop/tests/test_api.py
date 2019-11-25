@@ -50,6 +50,11 @@ class APIStatusCodeTests(TestCase):
         response = self.client.get('/v1/products/featured/')
         self.assertEquals(response.status_code, 200)
 
+    def test_new_products_status_code(self):
+        response = self.client.get('/v1/products/new/')
+        self.assertEquals(response.status_code, 200)
+
+
 class UserEndpointAPITest(TestCase):
 
     def setUp(self):

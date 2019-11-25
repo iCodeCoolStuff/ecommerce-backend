@@ -26,6 +26,12 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = ProductSerializer(q, many=True)
         return Response(serializer.data)
 
+    @action(methods=['GET'], detail=False)
+    def new(self, request, pk=None):
+        q = self.queryset.filter(new=True)
+        serializer = ProductSerializer(q, many=True)
+        return Response(serializer.data)
+
 
 class UserListCreateView(generics.ListCreateAPIView):
     lookup_field = 'pk'

@@ -43,7 +43,7 @@ class APIStatusCodeTests(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_product_detail_status_code(self):
-        response = self.client.get(f'/v1/products/{self.product.pk}/')
+        response = self.client.get(f'/v1/products/{self.product.slug}/')
         self.assertEquals(response.status_code, 200)
 
     def test_featured_products_status_code(self):

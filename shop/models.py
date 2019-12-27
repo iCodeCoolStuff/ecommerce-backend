@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Sum, F, FloatField
+from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import CustomUserManager
@@ -32,6 +33,11 @@ class Product(models.Model):
     featured = models.BooleanField(default=False)
     new = models.BooleanField(default=False)
     on_sale = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=255, blank=True, unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class CartItem(models.Model):

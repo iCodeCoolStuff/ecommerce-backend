@@ -19,13 +19,17 @@ class ImageSetSerializer(serializers.ModelSerializer):
         fields = ['img100x100', 'img690x400', 'img1920x1080']
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.HyperlinkedModelSerializer):
     images = ImageSetSerializer(read_only=True)
 
     class Meta:
         model = Product
         fields = ('pk', 'name', 'price', 'list_price', 'description', 'on_sale', 
-                    'new', 'featured', 'images')
+                    'new', 'featured', 'images', 'url')
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'}
+        }
 
 
 class UserRUDSerializer(serializers.ModelSerializer):

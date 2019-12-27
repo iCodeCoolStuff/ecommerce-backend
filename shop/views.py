@@ -24,13 +24,13 @@ class ProductViewSet(viewsets.ModelViewSet):
     @action(methods=['GET'], detail=False)
     def featured(self, request, pk=None):
         q = self.queryset.filter(featured=True)
-        serializer = ProductSerializer(q, many=True)
+        serializer = ProductSerializer(q, many=True, context={'request': request})
         return Response(serializer.data)
 
     @action(methods=['GET'], detail=False)
     def new(self, request, pk=None):
         q = self.queryset.filter(new=True)
-        serializer = ProductSerializer(q, many=True)
+        serializer = ProductSerializer(q, many=True, context={'request': request})
         return Response(serializer.data)
 
 

@@ -27,9 +27,11 @@ class Wishlist(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    list_price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     description = models.TextField()
     featured = models.BooleanField(default=False)
     new = models.BooleanField(default=False)
+    on_sale = models.BooleanField(default=False)
 
 
 class CartItem(models.Model):

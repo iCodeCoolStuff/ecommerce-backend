@@ -53,8 +53,8 @@ class Cart(models.Model):
 class ImageSet(models.Model):
     product    = models.OneToOneField(Product, related_name="images", on_delete=models.CASCADE)
     img100x100 = models.ImageField(upload_to="images/")
-    img300x400 = models.ImageField(upload_to="images/")
-    img500x600 = models.ImageField(upload_to="images/")
+    img690x400 = models.ImageField(upload_to="images/")
+    img1920x1080 = models.ImageField(upload_to="images/")
 
 
 class Order(models.Model):

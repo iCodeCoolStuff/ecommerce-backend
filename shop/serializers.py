@@ -16,7 +16,7 @@ from .models import (
 class ImageSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ImageSet
-        fields = ['img100x100', 'img300x400', 'img500x600']
+        fields = ['img100x100', 'img690x400', 'img1920x1080']
 
 
 class ProductSerializer(serializers.ModelSerializer):

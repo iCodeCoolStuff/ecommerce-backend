@@ -26,6 +26,13 @@ class Wishlist(models.Model):
 
 
 class Product(models.Model):
+    CATEGORIES = (
+        (1, 'Food & Drink'),
+        (2, 'Clothing'),
+        (3, 'Technology'),
+        (4, 'Miscellaneous')
+    )
+
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     list_price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
@@ -34,6 +41,7 @@ class Product(models.Model):
     new = models.BooleanField(default=False)
     on_sale = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, blank=True, unique=True)
+    category = models.IntegerField(default=4, choices=CATEGORIES)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

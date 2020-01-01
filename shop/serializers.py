@@ -25,9 +25,10 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
         fields = ('pk', 'name', 'price', 'list_price', 'description', 'on_sale', 
-                    'new', 'featured', 'images', 'url', 'slug')
+                    'new', 'featured', 'category', 'images', 'url', 'slug')
         lookup_field = 'slug'
         extra_kwargs = {
+            'slug': {'read_only': True},
             'url': {'lookup_field': 'slug'}
         }
 

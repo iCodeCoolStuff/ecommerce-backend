@@ -38,7 +38,7 @@ class ImageSetFactory(factory.django.DjangoModelFactory):
         if not create:
             return
 
-        # code needs to be sped up by a LOT
+        # code needs to be sped up by a LOT but most of the slowness is due to urllib ¯\_(ツ)_/¯
         img100x100 = NamedTemporaryFile(delete=True)
         img690x400 = NamedTemporaryFile(delete=True)
         img1920x1080 = NamedTemporaryFile(delete=True)

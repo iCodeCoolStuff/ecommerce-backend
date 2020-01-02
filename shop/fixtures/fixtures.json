@@ -1,0 +1,100 @@
+[
+  {
+    "model": "shop.product",
+    "pk": 1,
+    "fields": {
+      "name": "Cheez-It Baked Snack Crackers, Original Cheddar, Family Size, 21 oz",
+      "price": "4.54",
+      "list_price": "5.00",
+      "description": "Make snack time more fun with Cheez-It Original Baked Snack Crackers, bite-size cheese crackers that are baked to crispy perfection. Cheez-It Baked Snack Crackers are the real deal\\u2014made with 100% real cheese that's been carefully aged for a yummy, irresistible taste that\\u2019s bursting with real cheese goodness in every crunchy bite. Each perfect square crisp is loaded with bold cheesy flavor that hits your taste buds with every delicious mouthful. A baked snack, Cheez-It crackers are perfect for game time, party spreads, school lunches, late-night snacking and more\\u2014the cheesy options are endless. Go ahead and enjoy your favorite cheese bite. You'll love the one-of-a-kind flavor of real cheese in every tasty handful of Cheez-It Original Baked Snack Crackers.",
+      "featured": true,
+      "new": false,
+      "on_sale": false,
+      "slug": "cheez-it-baked-snack-crackers-original-cheddar-family-size-21-oz"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 2,
+    "fields": {
+      "name": "iRobot Roomba 670 Robot Vacuum-Wi-Fi Connectivity, Works with Google Home, Good for Pet Hair, Carpets, Hard Floors, Self-Charging",
+      "price": "197.00",
+      "list_price": "329.99",
+      "description": "Connect to clean from anywhere with the Roomba\\u00ae 670 robot vacuum. The patented 3-Stage Cleaning System is specially engineered to loosen, lift, and suction everything from small particles to large debris from carpets and hard floors. Just press Clean or schedule Roomba on the go with the iRobot HOME App.",
+      "featured": true,
+      "new": true,
+      "on_sale": true,
+      "slug": "irobot-roomba-670-robot-vacuum-wi-fi-connectivity-works-with-google-home-good-for-pet-hair-carpets-hard-floors-self-charging"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 3,
+    "fields": {
+      "name": "SAMSUNG 50\" Class 4K UHD 2160p LED Smart TV with HDR",
+      "price": "295.00",
+      "list_price": "328.00",
+      "description": "4K UHD for all, the choice is clear. Step up from Full HD with the clarity of the SAMSUNG 50\" Class 4K UHD 2160p LED Smart TV with HDR. Get 4X the resolution of Full HD, plus non-4K TV content is upscaled to 4K UHD via a powerful UHD Engine. Search less, enjoy more of your favorite streaming content and live TV shows with Samsung's Smart TV single universal guide.",
+      "featured": true,
+      "new": true,
+      "on_sale": true,
+      "slug": "samsung-50-class-4k-uhd-2160p-led-smart-tv-with-hdr"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 4,
+    "fields": {
+      "name": "Men's and Big Men's Ecosmart Blue Short Sleeve Tee",
+      "price": "8.24",
+      "list_price": "0.00",
+      "description": "Now our soft cotton-blend Men's Blue Soft Jersey Fabric EcoSmart Short Sleeve Tee is better than ever before: It's an EcoSmart shirt! That means it's made with up to 5% polyester created from recycled plastic bottles. jersey fabric combines 50% cotton/50% polyester, specially knit for softness. Lay flat collar stays flat, keeps its shape...guaranteed! Reinforced two-needle stitching at neck, sleeves, and hem for increased durability",
+      "featured": true,
+      "new": true,
+      "on_sale": false,
+      "slug": "mens-and-big-mens-ecosmart-blue-short-sleeve-tee"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 5,
+    "fields": {
+      "name": "Straight Talk Apple iPhone 11 Pro Prepaid with 64G, Space Gray",
+      "price": "999.00",
+      "list_price": "0.00",
+      "description": "Pro cameras. Pro display. Pro performance. Three cameras. Unlimited possibilities. Three up your camera game. The most advanced iPhone yet. Upgrade to the best iPhone yet. Shoot amazing videos and photos with the Ultra Wide, Wide, and Telephoto cameras. Capture your best low-light photos with Night mode. Watch HDR movies and shows on the Super Retina XDR display—the brightest iPhone display yet. Experience unprecedented performance with A13 Bionic for gaming, augmented reality (AR), and photography. And get all-day battery life and a new level of water resistance. All in the first iPhone powerful enough to be called Pro. 5.8-inch Super Retina XDR OLED display Water and dust resistant (4 meters for up to 30 minutes, IP68) Triple-camera system with 12MP Ultra Wide, Wide, and Telephoto cameras iOS 13 with Dark Mode, new tools for editing photos and video, and brand new privacy features",
+      "featured": true,
+      "new": true,
+      "on_sale": false,
+      "slug": "straight-talk-apple-iphone-11-pro-prepaid-with-64g-space-gray"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 6,
+    "fields": {
+      "name": "Nintendo Switch Console with Gray Joy-Con",
+      "price": "299.00",
+      "list_price": "0.00",
+      "description": "Get the gaming system that lets you play the games you want, wherever you are, however you like. Includes the Nintendo Switch console and Nintendo Switch dock in black, and left and right JoyCon controllers in a contrasting gray. Also includes all the extras you need to get started. Model number: HAC-001(-01). This model includes battery life of approximately 4.5 - 9 hours. The battery life will depend on the games you play. For instance, the battery will last approximately 5.5 hours for The Legend of Zelda: Breath of the Wild (games sold separately). Model number: HADSKAAAA. Nintendo Switch Console with Neon Blue & Red Joy-Con",
+      "featured": true,
+      "new": true,
+      "on_sale": false,
+      "slug": "nintendo-switch-console-with-gray-joy-con"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 7,
+    "fields": {
+      "name": "Mtn Dew Soda 1 Liter Plastic Bottle",
+      "price": "1.25",
+      "list_price": "0.00",
+      "description": "Quench your thirst with the bold and exhilarating taste of Mountain Dew, 1L. The unique, refreshing flavor makes it an excellent addition to parties, family reunions, game days and other fun get-togethers. This citrus soda can be served chilled or over ice for a cool treat any day of the year. It's low in sodium and contains just 170 calories per serving. Mtn Dew, 1 Lt:#DOTHEDEW #MTNDEWClassic Mountain Dew soda taste170 calories per servingLow sodiumIdeal refreshment for parties, sporting events, backyard barbecues and other friendly get-togethersSize makes it suitable for sharing with friends and familyPour into a juice bowl and mix with other refreshments to give the party punch a unique Mountain Dew twistServe in cups or glasses over ice for the whole family during lunch or dinner",
+      "featured": false,
+      "new": false,
+      "on_sale": false,
+      "slug": "mtn-dew-soda-1-liter-plastic-bottle"
+    }
+  }
+]

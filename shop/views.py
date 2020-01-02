@@ -1,3 +1,7 @@
+import urllib.parse
+
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity, TrigramDistance
+
 from rest_framework import generics, viewsets
 
 from rest_framework.decorators import action
@@ -79,3 +83,30 @@ class OrderViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         context['user_id'] = self.kwargs['user_pk']
         return context
+
+
+class SearchView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        query_param = self.request.GET.get('q', '')
+        category_param = self.request.GET.get('category', '')
+
+        query = urllib.parse.unquote_plus(query_param)
+        category = urllib.parse.unquote_plus(category_param)
+
+        if query == '':
+            return Product.objects.all()
+
+        try:
+            category = int(category)
+        except:
+            pass
+
+        valid_categories = map(lambda x: x[0], Product.CATEGORIES)
+
+        vector = SearchVector('name', weight='A') + SearchVector('description', weight='B')
+
+        queryset = Product.objects.annotate(rank=(SearchRank(vector, SearchQuery(query)))).filter(rank__gte=0.2).order_by('-rank')
+
+        return queryset.filter(category=category) if category in valid_categories else queryset

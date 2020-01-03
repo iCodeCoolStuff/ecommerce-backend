@@ -106,7 +106,7 @@ class SearchView(generics.ListAPIView):
         else:
             vector = SearchVector('name', weight='A') + SearchVector('description', weight='B')
             queryset = Product.objects.annotate(rank=(SearchRank(vector, SearchQuery(query)))).filter(rank__gte=0.2).order_by('-rank')
-        
+
         valid_categories = map(lambda x: x[0], Product.CATEGORIES)
 
         return queryset.filter(category=category) if category in valid_categories else queryset

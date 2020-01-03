@@ -95,18 +95,18 @@ class SearchView(generics.ListAPIView):
         query = urllib.parse.unquote_plus(query_param)
         category = urllib.parse.unquote_plus(category_param)
 
-        if query == '':
-            return Product.objects.all()
-
         try:
             category = int(category)
         except:
             pass
 
+        queryset = None
+        if query == '':
+            queryset = Product.objects.all()
+        else:
+            vector = SearchVector('name', weight='A') + SearchVector('description', weight='B')
+            queryset = Product.objects.annotate(rank=(SearchRank(vector, SearchQuery(query)))).filter(rank__gte=0.2).order_by('-rank')
+        
         valid_categories = map(lambda x: x[0], Product.CATEGORIES)
-
-        vector = SearchVector('name', weight='A') + SearchVector('description', weight='B')
-
-        queryset = Product.objects.annotate(rank=(SearchRank(vector, SearchQuery(query)))).filter(rank__gte=0.2).order_by('-rank')
 
         return queryset.filter(category=category) if category in valid_categories else queryset

@@ -70,6 +70,7 @@ urlpatterns = [
     path('v1/users/<int:user_pk>/orders/<int:pk>/', order_detail, name="order-detail"),
 
     path('v1/search/', views.SearchView.as_view(), name="search-list"),
+    path('v1/recommendations', views.recommendations),
 
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))

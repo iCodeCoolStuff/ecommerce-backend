@@ -2,9 +2,9 @@ import urllib.parse
 
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity, TrigramDistance
 
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, status
 
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response   import Response
 
 from .models      import User, Product, Cart, CartItem, Order
@@ -110,3 +110,28 @@ class SearchView(generics.ListAPIView):
         valid_categories = map(lambda x: x[0], Product.CATEGORIES)
 
         return queryset.filter(category=category) if category in valid_categories else queryset
+
+
+@api_view(['GET'])
+def recommendations(request):
+    if request.method != 'GET':
+        return Response({'error': 'Only \'GET\' is allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    pk = request.query_params.get('id', '')
+    if pk == '':
+        return Response({'error': 'Missing query param \'id\''}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        pk = int(pk)
+    except:
+        return Response({'error': '\'id\' is not an integer'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if not Product.objects.all().filter(pk=pk):
+        return Response({'error': 'Can\'t generate recommendations from a product that does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    obj = Product.objects.get(pk=pk)
+
+    queryset = Product.objects.all().filter(category=obj.category).exclude(pk=pk).order_by('?')[:4]
+
+    serializer = ProductSerializer(queryset, many=True, context={'request': request})
+    return Response(serializer.data, status=status.HTTP_200_OK)

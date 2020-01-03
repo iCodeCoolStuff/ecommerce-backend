@@ -53,6 +53,14 @@ class APIStatusCodeTests(TestCase):
     def test_new_products_status_code(self):
         response = self.client.get('/v1/products/new/')
         self.assertEquals(response.status_code, 200)
+    
+    def test_search_status_code(self):
+        response = self.client.get('/v1/search?q=apple')
+        self.assertEquals(response.status_code, 301)
+
+    def test_recommendations_status_code(self):
+        response = self.client.get(f'/v1/recommendations?id={self.product.id}')
+        self.assertEquals(response.status_code, 200)
 
 
 class UserEndpointAPITest(TestCase):
@@ -168,3 +176,38 @@ class TokenAPITest(TestCase):
         view = TokenObtainPairView.as_view()
         response = view(request)
         self.assertEqual(response.status_code, 200)
+
+
+class RecommendationsAPITest(TestCase):
+    
+    def setUp(self):
+        self.products = [
+            Product(name="Apple", price="1.00", description="A red apple.", category=1),
+            Product(name="Orange", price="1.00", description="An orange orange.", category=1),
+            Product(name="Banana", price="1.00", description="A yellow banana.", category=1),
+            Product(name="Peach", price="1.00", description="A pink peach.", category=1),
+            Product(name="Mango", price="1.00", description="A vermillion mango.", category=1)
+        ]
+
+        for p in self.products:
+            p.save()
+
+    def test_recommendations(self):
+        response = self.client.get(f'/v1/recommendations?id={self.products[0].pk}')
+        self.assertEquals(response.status_code, 200)
+
+    def test_recommendations_with_no_query_param(self):
+        response = self.client.get(f'/v1/recommendations')
+        self.assertEquals(response.status_code, 400)
+
+    def test_recommendations_with_bad_query_param(self):
+        response = self.client.get(f'/v1/recommendations?id=dfdf')
+        self.assertEquals(response.status_code, 400)
+    
+    def test_recommendations_with_id_missing_in_database(self):
+        response = self.client.get(f'/v1/recommendations?id=8374837873')
+        self.assertEquals(response.status_code, 400)
+    
+    def test_recommendations_with_wrong_method(self):
+        response = self.client.put(f'/v1/recommendations?id={self.products[0].pk}', {'name': 'basketball'})
+        self.assertEquals(response.status_code, 405)

@@ -18,7 +18,7 @@ class APIStatusCodeTests(TestCase):
         self.product = Product(name="Apple", price="1.00", description="A red apple.")
         self.product.save()
 
-    def test_users_status_code(self):
+    '''def test_users_status_code(self):
         response = self.client.get('/v1/users/')
         self.assertEquals(response.status_code, 200)
 
@@ -34,7 +34,7 @@ class APIStatusCodeTests(TestCase):
         response = self.client.get(f'/v1/users/{self.user.pk}/cart/items/')
         self.assertEquals(response.status_code, 200)
 
-    '''def test_user_detail_orders_status_code(self):
+    def test_user_detail_orders_status_code(self):
         response = self.client.get(f'/v1/users/{self.user.pk}/orders/')
         self.assertEquals(response.status_code, 200)'''
 
@@ -67,7 +67,7 @@ class APIStatusCodeTests(TestCase):
         self.assertEquals(response.status_code, 403)
 
 
-class UserEndpointAPITest(TestCase):
+'''class UserEndpointAPITest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(first_name="John", last_name="Doe", 
@@ -130,10 +130,10 @@ class UserEndpointAPITest(TestCase):
         response = view(request, pk=self.user.pk)
         response.render()
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.data["detail"], "Passwords do not match.")
+        self.assertEqual(response.data["detail"], "Passwords do not match.")'''
 
 
-class CartEndpointAPITest(TestCase):
+'''class CartEndpointAPITest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(first_name="John", last_name="Doe", 
@@ -149,16 +149,16 @@ class CartEndpointAPITest(TestCase):
         response.render()
         self.assertEqual(response.status_code, 201)
 
-    '''def test_checkout_cart(self):
+    def test_checkout_cart(self):
         cartitem = CartItem.objects.create(product=self.product, quantity=3)
         self.user.cart.items.add(cartitem)
 
         response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
-        self.assertEqual(response.status_code, 201)'''
+        self.assertEqual(response.status_code, 201)
 
-    '''def test_checkout_cart_with_no_items(self):
+    def test_checkout_cart_with_no_items(self):
         response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
@@ -166,7 +166,7 @@ class CartEndpointAPITest(TestCase):
         self.assertEqual(response.data["detail"], "Cart cannot be empty.")'''
 
 
-class TokenAPITest(TestCase):
+'''class TokenAPITest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(first_name="John", last_name="Doe", 
@@ -179,7 +179,7 @@ class TokenAPITest(TestCase):
         }, format="json")
         view = TokenObtainPairView.as_view()
         response = view(request)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)'''
 
 
 class RecommendationsAPITest(TestCase):

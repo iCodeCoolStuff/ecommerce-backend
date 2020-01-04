@@ -5,7 +5,7 @@ from rest_framework.test import APIRequestFactory
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from ..models import User, Product, CartItem
-from ..views  import UserListCreateView, UserRUDView, CartItemViewSet
+from ..views  import UserListCreateView, UserRUDView, CartItemViewSet, OrderViewSet
 
 FACTORY = APIRequestFactory()
 
@@ -34,9 +34,9 @@ class APIStatusCodeTests(TestCase):
         response = self.client.get(f'/v1/users/{self.user.pk}/cart/items/')
         self.assertEquals(response.status_code, 200)
 
-    def test_user_detail_orders_status_code(self):
+    '''def test_user_detail_orders_status_code(self):
         response = self.client.get(f'/v1/users/{self.user.pk}/orders/')
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)'''
 
     def test_products_status_code(self):
         response = self.client.get('/v1/products/')
@@ -61,6 +61,10 @@ class APIStatusCodeTests(TestCase):
     def test_recommendations_status_code(self):
         response = self.client.get(f'/v1/recommendations?id={self.product.id}')
         self.assertEquals(response.status_code, 200)
+    
+    def test_orders_status_code(self):
+        response = self.client.get(f'/v1/orders/')
+        self.assertEquals(response.status_code, 403)
 
 
 class UserEndpointAPITest(TestCase):
@@ -145,21 +149,21 @@ class CartEndpointAPITest(TestCase):
         response.render()
         self.assertEqual(response.status_code, 201)
 
-    def test_checkout_cart(self):
+    '''def test_checkout_cart(self):
         cartitem = CartItem.objects.create(product=self.product, quantity=3)
         self.user.cart.items.add(cartitem)
 
         response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)'''
 
-    def test_checkout_cart_with_no_items(self):
+    '''def test_checkout_cart_with_no_items(self):
         response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.data["detail"], "Cart cannot be empty.")
+        self.assertEqual(response.data["detail"], "Cart cannot be empty.")'''
 
 
 class TokenAPITest(TestCase):
@@ -211,3 +215,46 @@ class RecommendationsAPITest(TestCase):
     def test_recommendations_with_wrong_method(self):
         response = self.client.put(f'/v1/recommendations?id={self.products[0].pk}', {'name': 'basketball'})
         self.assertEquals(response.status_code, 405)
+
+
+class OrderAPITest(TestCase):
+    
+    def setUp(self):
+        self.product = Product.objects.create(name="Apple", price="1.00", description="A red apple.")
+        self.data = {
+            "first_name": "d",
+            "last_name": "d",
+            "address1": "d",
+            "address2": "d",
+            "city": "d",
+            "region": "d",
+            "zip": "12345",
+            "country": "d",
+            "items": [{
+                "product_id": f'{self.product.pk}',
+                "quantity": "3"
+            }]
+        }
+    
+    def test_order_creates_successfully(self):
+        request = FACTORY.post(f'/v1/orders/', self.data, format='json')
+        view = OrderViewSet.as_view({'post': 'create'})
+        response = view(request)
+        response.render()
+        self.assertEqual(response.status_code, 201)
+    
+    def test_order_does_not_create_with_bad_product_id(self):
+        self.data['items'][0]['product_id'] = -1
+        request = FACTORY.post(f'/v1/orders/', self.data, format='json')
+        view = OrderViewSet.as_view({'post': 'create'})
+        response = view(request)
+        response.render()
+        self.assertEqual(response.status_code, 400)
+    
+    def test_order_does_not_create_with_duplicate_product_ids(self):
+        self.data['items'].append({"product_id": f'{self.product.pk}',"quantity": "3"})
+        request = FACTORY.post(f'/v1/orders/', self.data, format='json')
+        view = OrderViewSet.as_view({'post': 'create'})
+        response = view(request)
+        response.render()
+        self.assertEqual(response.status_code, 400)

@@ -24,6 +24,7 @@ from shop import views
 
 api_router = routers.DefaultRouter()
 api_router.register(r'products', views.ProductViewSet)
+api_router.register(r'orders', views.OrderViewSet)
 
 item_list = views.CartItemViewSet.as_view({
     'get': 'list',

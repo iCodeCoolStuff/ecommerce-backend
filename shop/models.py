@@ -1,5 +1,8 @@
+import re
+
 from django.contrib import admin
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Sum, F, FloatField
 from django.utils.text import slugify
@@ -7,6 +10,14 @@ from django.utils.translation import ugettext_lazy as _
 
 from .managers import CustomUserManager
 
+ZIP_PATTERN = re.compile("^\d{5}$")
+
+def zip_code_validator(value):
+    if not ZIP_PATTERN.match(value):
+        raise ValidationError(
+            _('%(value)s is not a valid zip code'),
+            params={'value': value}
+        )
 
 class User(AbstractUser):
     username = None
@@ -73,8 +84,36 @@ class ImageSet(models.Model):
     img1920x1080 = models.ImageField(upload_to="images/")
 
 
+class OrderItem(models.Model):
+    order = models.ForeignKey('Order', related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    quantity = models.IntegerField()
+
+    class Meta:
+        unique_together = ('product', 'order')
+
+
 class Order(models.Model):
-    user       = models.ForeignKey(User, on_delete=models.CASCADE)
-    items      = models.ManyToManyField('CartItem')
     order_date = models.DateTimeField(auto_now_add=True)
-    total      = models.DecimalField(max_digits=6, decimal_places=2)
+    total      = models.DecimalField(max_digits=12, decimal_places=2)
+
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    address1 = models.CharField(max_length=255)
+    address2 = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    region = models.CharField(max_length=255)
+    zip = models.CharField(max_length=5, validators=[zip_code_validator])
+    country = models.CharField(max_length=255)
+
+    def calc_and_set_total(self):
+        total_dict = self.items.aggregate(total=Sum(F('quantity') * F('product__price'),
+                                            output_field=FloatField()))
+        total = 0.0
+        if total_dict.get('total') == None:
+            pass
+        else:
+            total = total_dict['total']
+
+        self.total = total
+        self.save()

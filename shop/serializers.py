@@ -9,7 +9,8 @@ from .models import (
     Product,
     Cart,
     CartItem,
-    Order
+    Order,
+    OrderItem
 )
 
 
@@ -124,24 +125,78 @@ class CartSerializer(serializers.ModelSerializer):
         return obj.get_total()
 
 
+class OrderItemSerializer(serializers.ModelSerializer):
+    product_id = serializers.IntegerField(write_only=True)
+    product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = OrderItem
+        fields = ['pk', 'product_id', 'product', 'quantity']
+    
+    def create(self, validated_data):
+        product_id = validated_data['product_id']
+        quantity = validated_data['quantity']
+        order = validated_data['order']
+
+        product = Product.objects.get(pk=product_id)
+        orderItem = OrderItem.objects.create(product=product, quantity=quantity)
+        return orderItem
+
+
 class OrderSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True, read_only=True)
+    items = OrderItemSerializer(many=True)
 
     class Meta:
         model = Order
-        fields = ['pk', 'user', 'total', 'order_date', 'items']
-        read_only_fields = fields
+        fields = ['pk', 'first_name', 'last_name', 'address1', 'address2', 'city', 'region', 
+                    'zip', 'country', 'items', 'total', 'order_date']
+        read_only_fields = ['total', 'order_date']
 
     def create(self, validated_data):
-        user  = User.objects.get(pk=self.context['user_id'])
-        cart  = Cart.objects.get(user=user)
+        items = validated_data['items']
+        first_name = validated_data['first_name']
+        last_name = validated_data['last_name']
+        address1 = validated_data['address1']
+        address2 = validated_data['address2']
+        city = validated_data['city']
+        region = validated_data['region']
+        zip = validated_data['zip']
+        country = validated_data['country']
 
-        if not cart.items.exists():
-            raise exceptions.EmptyCartException()
+        productIds = []
+        for item in items:
+            product = None
+            try:
+                id = item['product_id']
+                product = Product.objects.get(pk=id)
+            except:
+                raise exceptions.ItemDoesntExist(f'Product with a product id of {id} does not exist')
 
-        order = Order(user=user, total=cart.get_total())
-        order.save()
-        order.items.set(cart.items.all())
+            if product.pk in productIds:
+                raise exceptions.ItemAlreadyExists(f'Duplicate items with a product id of {product.pk}')
+            productIds.append(product.pk)
 
-        cart.items.clear()
+        order = Order.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            address1=address1,
+            address2=address2,
+            city=city,
+            region=region,
+            zip=zip,
+            country=country,
+            total=0.0
+        )
+
+        orderItems = []
+        for item in items:
+            orderItem = OrderItem.objects.create(
+                product=Product.objects.get(pk=item['product_id']),
+                quantity=item['quantity'],
+                order=order
+            )
+            orderItems.append(orderItem)
+
+        order.items.set(orderItems)
+        order.calc_and_set_total()
         return order

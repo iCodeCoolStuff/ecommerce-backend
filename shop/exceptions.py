@@ -23,3 +23,8 @@ class ItemDoesntExist(APIException):
 class ItemAlreadyExists(APIException):
     status_code = 400
     default_detail = "Entered in an item for a product multiple times"
+
+
+class NoItemsException(APIException):
+    status_code = 400
+    default_detail = "No items provided"

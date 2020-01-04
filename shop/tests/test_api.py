@@ -258,3 +258,11 @@ class OrderAPITest(TestCase):
         response = view(request)
         response.render()
         self.assertEqual(response.status_code, 400)
+    
+    def test_order_does_not_create_with_no_items(self):
+        self.data['items'] = []
+        request = FACTORY.post(f'/v1/orders/', self.data, format='json')
+        view = OrderViewSet.as_view({'post': 'create'})
+        response = view(request)
+        response.render()
+        self.assertEqual(response.status_code, 400)

@@ -163,6 +163,9 @@ class OrderSerializer(serializers.ModelSerializer):
         zip = validated_data['zip']
         country = validated_data['country']
 
+        if not items:
+            raise exceptions.NoItemsException
+
         productIds = []
         for item in items:
             product = None

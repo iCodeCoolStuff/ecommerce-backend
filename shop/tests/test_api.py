@@ -34,7 +34,7 @@ class APIStatusCodeTests(TestCase):
         response = self.client.get(f'/v1/users/{self.user.pk}/cart/items/')
         self.assertEquals(response.status_code, 200)
 
-    def test_user_detail_orders_status_code(self):
+    '''def test_user_detail_orders_status_code(self):
         response = self.client.get(f'/v1/users/{self.user.pk}/orders/')
         self.assertEquals(response.status_code, 200)'''
 
@@ -149,16 +149,16 @@ class APIStatusCodeTests(TestCase):
         response.render()
         self.assertEqual(response.status_code, 201)
 
-    def test_checkout_cart(self):
+    '''def test_checkout_cart(self):
         cartitem = CartItem.objects.create(product=self.product, quantity=3)
         self.user.cart.items.add(cartitem)
 
         response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)'''
 
-    def test_checkout_cart_with_no_items(self):
+    '''def test_checkout_cart_with_no_items(self):
         response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
@@ -253,6 +253,14 @@ class OrderAPITest(TestCase):
     
     def test_order_does_not_create_with_duplicate_product_ids(self):
         self.data['items'].append({"product_id": f'{self.product.pk}',"quantity": "3"})
+        request = FACTORY.post(f'/v1/orders/', self.data, format='json')
+        view = OrderViewSet.as_view({'post': 'create'})
+        response = view(request)
+        response.render()
+        self.assertEqual(response.status_code, 400)
+    
+    def test_order_does_not_create_with_no_items(self):
+        self.data['items'] = []
         request = FACTORY.post(f'/v1/orders/', self.data, format='json')
         view = OrderViewSet.as_view({'post': 'create'})
         response = view(request)

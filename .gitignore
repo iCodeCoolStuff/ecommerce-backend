@@ -127,7 +127,7 @@ dmypy.json
 # Django directories
 
 media/
-static/
+#static/
 
 # vscode
 .vscode/

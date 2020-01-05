@@ -57,6 +57,9 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f'Product ({self.name})'
 
 
 class CartItem(models.Model):

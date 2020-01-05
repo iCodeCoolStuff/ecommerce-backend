@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'j!ppxh5ha=pb87x%u50-es*d6qw5x&7y^opp7jp)my&-jbka=6'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False #True
@@ -100,7 +100,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication'
         #'rest_framework_simplejwt.authentication.JWTAuthentication'
     ],
-    'COERCE_DECIMAL_TO_STRING': False
+    'DEFAULT_PERMISSION_CLASSES' : [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ],
+    'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 

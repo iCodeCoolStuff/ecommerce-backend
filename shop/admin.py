@@ -27,4 +27,5 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(ImageSet)
+admin.site.register(Product)
 admin.site.register(Order)

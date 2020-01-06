@@ -2,11 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-<<<<<<< HEAD
-from .models import User, ImageSet, Product
-=======
 from .models import User, ImageSet, Order
->>>>>>> fd46e7f... register order model in admin
 
 
 class CustomUserAdmin(UserAdmin):
@@ -30,10 +26,5 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(User, CustomUserAdmin)
-<<<<<<< HEAD
-admin.site.register(Product)
-admin.site.register(ImageSet)
-=======
 admin.site.register(ImageSet)
 admin.site.register(Order)
->>>>>>> fd46e7f... register order model in admin

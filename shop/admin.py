@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import User, ImageSet, Order, Product
+from .models import User, ImageSet, Order, Product, OrderItem
 
 
 class CustomUserAdmin(UserAdmin):
@@ -25,7 +25,20 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+
+class OrderAdmin(admin.ModelAdmin):
+    items = "order__items"
+    inlines = [OrderItemInline]
+
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(ImageSet)
+<<<<<<< HEAD
 admin.site.register(Product)
 admin.site.register(Order)
+=======
+admin.site.register(Order, OrderAdmin)
+admin.site.register(Product)
+>>>>>>> cd01908... show order items in django admin

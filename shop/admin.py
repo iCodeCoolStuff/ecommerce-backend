@@ -35,10 +35,5 @@ class OrderAdmin(admin.ModelAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(ImageSet)
-<<<<<<< HEAD
-admin.site.register(Product)
-admin.site.register(Order)
-=======
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Product)
->>>>>>> cd01908... show order items in django admin

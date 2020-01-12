@@ -108,6 +108,12 @@ REST_FRAMEWORK = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
+        'NAME': 'shop.validators.PasswordValidator'
+    }
+]
+
+#old password validators
+'''{
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
@@ -118,8 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+    },'''
 
 
 # Internationalization

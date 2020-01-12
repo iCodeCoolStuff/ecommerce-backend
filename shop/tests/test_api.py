@@ -78,12 +78,25 @@ class UserEndpointAPITest(TestCase):
             'first_name': 'John',
             'last_name' : 'Doe',
             'email'     : 'johndoe@example.com',
+            'password'  : 'Abcdef4$',
+            'password_confirmation': 'Abcdef4$'}, format='json')
+        view = UserListCreateView.as_view()
+        response = view(request)
+        response.render()
+        self.assertEqual(response.status_code, 201)
+    
+    def test_create_user_with_bad_password(self):
+        request = FACTORY.post('/v1/users/', {
+            'first_name': 'John',
+            'last_name' : 'Doe',
+            'email'     : 'johndoe@example.com',
             'password'  : 'password',
             'password_confirmation': 'password'}, format='json')
         view = UserListCreateView.as_view()
         response = view(request)
         response.render()
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
+
 
     def test_create_user_without_password_confirmation(self):
         request = FACTORY.post('/v1/users/', {
@@ -101,7 +114,7 @@ class UserEndpointAPITest(TestCase):
             'first_name': 'John',
             'last_name' : 'Doe',
             'email'     : 'johndoe@example.com',
-            'password'  : 'password',
+            'password'  : 'Abcdef4$',
             'password_confirmation': 'wordpass'}, format='json')
         view = UserListCreateView.as_view()
         response = view(request)

@@ -4,7 +4,7 @@ class PasswordMismatchException(APIException):
     status_code = 400
     default_detail = "Passwords do not match."
 
-class PassowordValidationException(APIException):
+class PasswordValidationException(APIException):
     status_code = 400
     default_detail = "Password must have at least one uppercase letter," \
                 + " at least one lowercase letter, at least one number, and at least one special character"

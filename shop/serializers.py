@@ -88,7 +88,7 @@ class UserListCreateSerializer(serializers.ModelSerializer):
         try:
             errors = validate_password(password)
         except ValidationError:
-            raise exceptions.PassowordValidationException()
+            raise exceptions.PasswordValidationException()
         
         user = User.objects.create_user(first_name=first_name,
                                             last_name=last_name,

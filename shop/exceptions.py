@@ -6,8 +6,7 @@ class PasswordMismatchException(APIException):
 
 class PasswordValidationException(APIException):
     status_code = 400
-    default_detail = "Password must have at least one uppercase letter," \
-                + " at least one lowercase letter, at least one number, and at least one special character"
+    default_detail = "Passwords must be at least 8 characters long, and contain one capital letter and one number"
 
 
 class PasswordConfirmationMismatchException(APIException):

@@ -78,8 +78,8 @@ class UserEndpointAPITest(TestCase):
             'first_name': 'John',
             'last_name' : 'Doe',
             'email'     : 'johndoe@example.com',
-            'password'  : 'Abcdef4$',
-            'password_confirmation': 'Abcdef4$'}, format='json')
+            'password'  : 'Abcdefg1',
+            'password_confirmation': 'Abcdefg1'}, format='json')
         view = UserListCreateView.as_view()
         response = view(request)
         response.render()

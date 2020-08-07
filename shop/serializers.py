@@ -2,6 +2,8 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from rest_framework import serializers
 
 from . import exceptions
@@ -207,6 +209,21 @@ class OrderSerializer(serializers.ModelSerializer):
             )
             orderItems.append(orderItem)
 
+        if self.context['request'].user.is_authenticated:
+            order.user = User.objects.get(pk=self.context['user_id'])
+            order.save()
+
         order.items.set(orderItems)
         order.calc_and_set_total()
         return order
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['first_name'] = user.first_name
+        token['last_name'] = user.last_name
+
+        return token

@@ -4,6 +4,10 @@ class PasswordMismatchException(APIException):
     status_code = 400
     default_detail = "Passwords do not match."
 
+class PasswordValidationException(APIException):
+    status_code = 400
+    default_detail = "Passwords must be at least 8 characters long, and contain one capital letter and one number"
+
 
 class PasswordConfirmationMismatchException(APIException):
     status_code = 400

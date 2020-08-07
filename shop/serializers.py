@@ -1,4 +1,8 @@
+from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.password_validation import validate_password
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from rest_framework import serializers
 
@@ -79,15 +83,20 @@ class UserListCreateSerializer(serializers.ModelSerializer):
         last_name  = validated_data['last_name']
         email      = validated_data['email']
         password   = validated_data['password']
+
+        if not password == validated_data['password_confirmation']:
+            raise exceptions.PasswordConfirmationMismatchException()
         
-        if password == validated_data['password_confirmation']:
-            user = User.objects.create_user(first_name=first_name,
+        try:
+            errors = validate_password(password)
+        except ValidationError:
+            raise exceptions.PasswordValidationException()
+        
+        user = User.objects.create_user(first_name=first_name,
                                             last_name=last_name,
                                             email=email,
                                             password=password)
-            return user
-        else:
-            raise exceptions.PasswordConfirmationMismatchException()
+        return user            
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -200,6 +209,21 @@ class OrderSerializer(serializers.ModelSerializer):
             )
             orderItems.append(orderItem)
 
+        if self.context['request'].user.is_authenticated:
+            order.user = User.objects.get(pk=self.context['user_id'])
+            order.save()
+
         order.items.set(orderItems)
         order.calc_and_set_total()
         return order
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['first_name'] = user.first_name
+        token['last_name'] = user.last_name
+
+        return token

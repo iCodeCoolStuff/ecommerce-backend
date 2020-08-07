@@ -33,7 +33,7 @@ class ImageSetFactory(factory.django.DjangoModelFactory):
     img690x400 = factory.django.ImageField(width=690, height=400)
     img1920x1080 = factory.django.ImageField(width=1920, height=1080)
 
-    @factory.post_generation
+    '''@factory.post_generation
     def images(obj, create, extracted, **kwargs):
         if not create:
             return
@@ -55,4 +55,4 @@ class ImageSetFactory(factory.django.DjangoModelFactory):
         obj.img690x400.save(os.path.basename(obj.img690x400.url), File(img690x400))
         obj.img1920x1080.save(os.path.basename(obj.img1920x1080.url), File(img1920x1080))
 
-        obj.save()
+        obj.save()'''

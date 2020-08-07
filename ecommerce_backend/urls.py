@@ -63,8 +63,8 @@ urlpatterns = [
     path('v1/', include(api_router.urls)),
     path('v1/token/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('v1/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
     path('v1/users/', views.UserListCreateView.as_view()),
+
     #path('v1/users/<int:pk>/', views.UserRUDView.as_view(), name="user-detail"),
 
     #path('v1/users/<int:pk>/cart/', views.CartView.as_view(), name="cart-detail"),

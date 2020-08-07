@@ -7,6 +7,8 @@ from rest_framework import generics, viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response   import Response
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .models      import User, Product, Cart, CartItem, Order, OrderItem
 
 from .permissions import IsAdminOrWriteOnly, UserPermission
@@ -17,7 +19,8 @@ from .serializers import (
     CartSerializer,
     CartItemSerializer,
     OrderSerializer,
-    OrderItemSerializer
+    OrderItemSerializer,
+    CustomTokenObtainPairSerializer
 )
 
 
@@ -78,19 +81,25 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     permission_classes = [IsAdminOrWriteOnly]
 
-    '''def get_queryset(self):
+
+class AuthOrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+    permission_classes = [UserPermission]
+
+    def get_queryset(self):
         user = User.objects.get(pk=self.kwargs['user_pk'])
         return Order.objects.filter(user=user)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context['user_id'] = self.kwargs['user_pk']
-        return context'''
+        return context
 
 
-class OrderItemViewSet(viewsets.ModelViewSet):
+'''class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
-    queryset = OrderItem.objects.all()
+    queryset = OrderItem.objects.all()'''
 
 
 class SearchView(generics.ListAPIView):
@@ -143,3 +152,7 @@ def recommendations(request):
 
     serializer = ProductSerializer(queryset, many=True, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+ 
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

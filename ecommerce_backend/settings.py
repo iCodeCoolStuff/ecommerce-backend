@@ -100,9 +100,6 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication'
         #'rest_framework.authentication.SessionAuthentication'
     ],
-<<<<<<< Updated upstream
-    'COERCE_DECIMAL_TO_STRING': False
-=======
     'DEFAULT_PERMISSION_CLASSES' : [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ],
@@ -110,7 +107,6 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     )
->>>>>>> Stashed changes
 }
 
 SIMPLE_JWT = {

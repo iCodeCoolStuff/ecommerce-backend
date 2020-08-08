@@ -104,6 +104,8 @@ REST_FRAMEWORK = {
         #'rest_framework.authentication.SessionAuthentication'
     ],
     'DEFAULT_PERMISSION_CLASSES' : [
+        'shop.permissions.IsAdminOrWriteOnly',
+        'shop.permissions.UserPermission',
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ],
     'COERCE_DECIMAL_TO_STRING': False,

@@ -22,17 +22,17 @@ class APIStatusCodeTests(TestCase):
         response = self.client.get('/v1/users/')
         self.assertEquals(response.status_code, 200)
 
-    def test_user_detail_status_code(self):
+    '''def test_user_detail_status_code(self):
         response = self.client.get(f'/v1/users/{self.user.pk}/')
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)'''
 
-    def test_user_detail_cart_status_code(self):
+    '''def test_user_detail_cart_status_code(self):
         response = self.client.get(f'/v1/users/{self.user.pk}/cart/')
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)'''
 
-    def test_user_detail_cart_items_status_code(self):
+    '''def test_user_detail_cart_items_status_code(self):
         response = self.client.get(f'/v1/users/{self.user.pk}/cart/items/')
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)'''
 
     '''def test_user_detail_orders_status_code(self):
         response = self.client.get(f'/v1/users/{self.user.pk}/orders/')
@@ -64,7 +64,7 @@ class APIStatusCodeTests(TestCase):
     
     def test_orders_status_code(self):
         response = self.client.get(f'/v1/orders/')
-        self.assertEquals(response.status_code, 403)
+        self.assertEquals(response.status_code, 401)
 
 
 '''class UserEndpointAPITest(TestCase):
@@ -78,12 +78,25 @@ class APIStatusCodeTests(TestCase):
             'first_name': 'John',
             'last_name' : 'Doe',
             'email'     : 'johndoe@example.com',
+            'password'  : 'Abcdefg1',
+            'password_confirmation': 'Abcdefg1'}, format='json')
+        view = UserListCreateView.as_view()
+        response = view(request)
+        response.render()
+        self.assertEqual(response.status_code, 201)
+    
+    def test_create_user_with_bad_password(self):
+        request = FACTORY.post('/v1/users/', {
+            'first_name': 'John',
+            'last_name' : 'Doe',
+            'email'     : 'johndoe@example.com',
             'password'  : 'password',
             'password_confirmation': 'password'}, format='json')
         view = UserListCreateView.as_view()
         response = view(request)
         response.render()
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
+
 
     def test_create_user_without_password_confirmation(self):
         request = FACTORY.post('/v1/users/', {
@@ -101,7 +114,7 @@ class APIStatusCodeTests(TestCase):
             'first_name': 'John',
             'last_name' : 'Doe',
             'email'     : 'johndoe@example.com',
-            'password'  : 'password',
+            'password'  : 'Abcdef4$',
             'password_confirmation': 'wordpass'}, format='json')
         view = UserListCreateView.as_view()
         response = view(request)
@@ -149,16 +162,16 @@ class APIStatusCodeTests(TestCase):
         response.render()
         self.assertEqual(response.status_code, 201)
 
-    '''def test_checkout_cart(self):
+    def test_checkout_cart(self):
         cartitem = CartItem.objects.create(product=self.product, quantity=3)
         self.user.cart.items.add(cartitem)
 
         response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 
-        self.assertEqual(response.status_code, 201)'''
+        self.assertEqual(response.status_code, 201)
 
-    '''def test_checkout_cart_with_no_items(self):
+    def test_checkout_cart_with_no_items(self):
         response = self.client.post(f'/v1/users/{self.user.pk}/cart/checkout', format="json")
         response.render()
 

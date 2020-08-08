@@ -46,14 +46,14 @@ class UserListCreateView(generics.ListCreateAPIView):
     lookup_field = 'pk'
     queryset = User.objects.all()
     serializer_class = UserListCreateSerializer
-    permission_classes = [IsAdminOrWriteOnly]
+    #permission_classes = [IsAdminOrWriteOnly]
 
 
 class UserRUDView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     queryset = User.objects.all()
     serializer_class = UserRUDSerializer
-    permission_classes = [UserPermission]
+    #permission_classes = [UserPermission]
 
 
 class CartView(generics.RetrieveAPIView):

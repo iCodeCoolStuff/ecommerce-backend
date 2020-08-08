@@ -21,7 +21,7 @@ class ProductFactory(factory.django.DjangoModelFactory):
     on_sale = factory.Faker('pybool')
     category = factory.Faker('pyint', min_value=1, max_value=4)
 
-    imageset = factory.RelatedFactory('shop.factories.ImageSetFactory', 'product')
+    #imageset = factory.RelatedFactory('shop.factories.ImageSetFactory', 'product')
 
 
 class ImageSetFactory(factory.django.DjangoModelFactory):

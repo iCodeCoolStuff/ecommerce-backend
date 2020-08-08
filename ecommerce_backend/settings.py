@@ -103,26 +103,15 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication'
         #'rest_framework.authentication.SessionAuthentication'
     ],
-<<<<<<< HEAD
-    'DEFAULT_PERMISSION_CLASSES' : [
-=======
-<<<<<<< Updated upstream
-    'COERCE_DECIMAL_TO_STRING': False
-=======
     'DEFAULT_PERMISSION_CLASSES' : [
         'shop.permissions.IsAdminOrWriteOnly',
         'shop.permissions.UserPermission',
->>>>>>> 0681ed4... update permission config
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ],
     'COERCE_DECIMAL_TO_STRING': False,
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     )
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> 0681ed4... update permission config
 }
 
 SIMPLE_JWT = {
